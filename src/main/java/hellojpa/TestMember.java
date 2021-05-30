@@ -10,14 +10,23 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@TableGenerator(
+        name = "test_member_table_seq_generator",
+        table = "MY_SEQUENCES",
+        pkColumnValue = "TEST_MEMBER_SEQ",allocationSize = 1
+)
 //@Table(uniqueConstraints = {
 //        @UniqueConstraint(
 //                columnNames = {"name"}
 //        )
 //})
+@SequenceGenerator(name="test_member_seq_generator", sequenceName = "test_member_seq")
 public class TestMember {
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "test_member_seq_generator")
+    @GeneratedValue(strategy = GenerationType.TABLE,
+    generator = "test_member_table_seq_generator")
     private Long id;
 
     @Column(name = "name", nullable = false)
