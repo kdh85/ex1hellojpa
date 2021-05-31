@@ -55,11 +55,27 @@ public class JpaMain {
             entityManager.flush();
             entityManager.clear();
 
-            Member finMember = entityManager.find(Member.class,member.getId());
-            List<Member> memberList = finMember.getTeam().getMemberList();
-            for (Member member1 : memberList) {
-                System.out.println("member1 = " + member1.getUsername());
-            }
+            //List<Member> findMembers = entityManager.createQuery("select m from Member m join fetch m.team",Member.class).getResultList();
+
+            Child child = new Child();
+            child.setName("c1");
+
+            Parent parent = new Parent();
+            parent.setName("p1");
+            parent.addChild(child);
+
+            entityManager.persist(parent);
+
+            entityManager.flush();
+            entityManager.clear();
+
+            Parent parent1 =entityManager.find(Parent.class,parent.getId());
+            parent1.getChildList().remove(0);
+//            Member finMember = entityManager.find(Member.class,member.getId());
+//            List<Member> memberList = finMember.getTeam().getMemberList();
+//            for (Member member1 : memberList) {
+//                System.out.println("member1 = " + member1.getUsername());
+//            }
 
 //1. 맴버 생성.
 //            TestMember testMember = new TestMember();

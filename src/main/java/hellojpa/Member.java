@@ -22,7 +22,7 @@ public class Member extends BaseEntity{
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)//지연로딩. 앤티티를 프록시 객체로 조회하도록.
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
