@@ -45,6 +45,7 @@ public class JpaMain {
             findmMember.getAddressHistory().remove(new Address("city0","street0","0000"));
 
             //entityManager.persist(findmMember);
+
             //-------------------------------------------
 //            Team team = new Team();
 //            team.setName("teamA");
