@@ -18,15 +18,42 @@ public class JpaMain {
         entityTransaction.begin();
 
         try {
-
-            Team team = new Team();
-            team.setName("teamA");
-
-            entityManager.persist(team);
-
             Member member = new Member();
-            member.setUsername("user1");
-            member.setTeam(team);
+            member.setUsername("testAddress");
+            member.setHomeAddress(new Address("city0","street0","0000"));
+
+            member.getAddressHistory().add(new AddressEntity(member.getHomeAddress()));
+
+            member.setHomeAddress(new Address("city1","street1","0001"));
+            member.getAddressHistory().add(new AddressEntity(member.getHomeAddress()));
+            List<AddressEntity> addressHistory = member.getAddressHistory();
+            for (AddressEntity addressEntitys : addressHistory) {
+                System.out.println("address.getCity()+\":\"+address.getStreet()+\":\"+address.getZipcode() = " + addressEntitys.getAddress().getCity()+":"+addressEntitys.getAddress().getStreet()+":"+addressEntitys.getAddress().getZipcode());
+            }
+            member.getFavoriteFoods().add("와사비");
+            member.getFavoriteFoods().add("간장");
+            
+            entityManager.persist(member);
+
+            entityManager.flush();
+            entityManager.clear();
+
+            Member findmMember = entityManager.find(Member.class, member.getId());
+            findmMember.getFavoriteFoods().remove("와사비");
+            findmMember.getFavoriteFoods().add(("초코"));
+
+            findmMember.getAddressHistory().remove(new Address("city0","street0","0000"));
+
+            //entityManager.persist(findmMember);
+            //-------------------------------------------
+//            Team team = new Team();
+//            team.setName("teamA");
+//
+//            entityManager.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("user1");
+//            member.setTeam(team);
             /*
             JPA에서는 테이블간에 FK관계를 가지는 컬럼에 대해서
             1:1, 1:N, N:M관계를 표현해야 하는데
@@ -47,36 +74,37 @@ public class JpaMain {
                 or
             team.addMembers(member); 을 통해서 해결.(종속)
             */
-            member.changeTeam(team);
+            //member.changeTeam(team);
             //team.addMembers(member);
-            entityManager.persist(member);
-
+            //entityManager.persist(member);
+            //-------------------------------------------
 
             entityManager.flush();
             entityManager.clear();
 
             //List<Member> findMembers = entityManager.createQuery("select m from Member m join fetch m.team",Member.class).getResultList();
-
-            Child child = new Child();
-            child.setName("c1");
-
-            Parent parent = new Parent();
-            parent.setName("p1");
-            parent.addChild(child);
-
-            entityManager.persist(parent);
-
-            entityManager.flush();
-            entityManager.clear();
-
-            Parent parent1 =entityManager.find(Parent.class,parent.getId());
-            parent1.getChildList().remove(0);
+            //--------------------------------------
+//            Child child = new Child();
+//            child.setName("c1");
+//
+//            Parent parent = new Parent();
+//            parent.setName("p1");
+//            parent.addChild(child);
+//
+//            entityManager.persist(parent);
+//
+//            entityManager.flush();
+//            entityManager.clear();
+//
+//            Parent parent1 =entityManager.find(Parent.class,parent.getId());
+//            parent1.getChildList().remove(0);
+            //-----------------------------------------
 //            Member finMember = entityManager.find(Member.class,member.getId());
 //            List<Member> memberList = finMember.getTeam().getMemberList();
 //            for (Member member1 : memberList) {
 //                System.out.println("member1 = " + member1.getUsername());
 //            }
-
+            //-------------------------------------------
 //1. 맴버 생성.
 //            TestMember testMember = new TestMember();
 //            testMember.setId(1L);
@@ -108,7 +136,7 @@ public class JpaMain {
 //            entityManager.persist(testMember1);
 //            entityManager.persist(testMember2);
             //entityManager.flush();//강제로 쿼리 실행.
-
+            //-------------------------------------------
 //            TestMember testMember = new TestMember();
 //            //testMember.setId(10L);
 //            testMember.setAge(10);
@@ -116,7 +144,7 @@ public class JpaMain {
 //            testMember.setRoleType(RoleType.ADMIN);
 //
 //            entityManager.persist(testMember);
-
+            //-------------------------------------------
             entityTransaction.commit();//flush를 내부에서 호출.(기본)
         }catch (Exception e){
             entityTransaction.rollback();

@@ -18,7 +18,7 @@
             <!-- 영속성 컨테이너에 모았다가 한번에 실행하는 쿼리 갯수 단위.-->
             <property name="hibernate.jdbc.batch_size" value="10"/>
 
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
 </persistence>
